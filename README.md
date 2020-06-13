@@ -10,14 +10,22 @@ Using fundamental NLP techniques to understand the sentiment in the latest news 
 
 Following tasks are performed:
 
-1. [Sentiment Analysis](#Sentiment-Analysis)
+<br>1. [Sentiment Analysis](#Sentiment-Analysis)</br>
+* Use of [Vader Sentiment Analysis](http://www.nltk.org/howto/sentiment.html)
+
     ```
         from nltk.sentiment.vader import SentimentIntensityAnalyzer
         analyzer = SentimentIntensityAnalyzer()
     ```
-2. [Natural Language Processing](#Natural-Language-Processing)
+    
+<br>2. [Natural Language Processing](#Natural-Language-Processing)</br>
+* Natural Language Toolkit [NLTK](https://en.wikipedia.org/wiki/Natural_Language_Toolkit)
+* Tokenizing Words & Sentences with NLTK [Tokenizing](https://en.wikipedia.org/wiki/Natural_Language_Toolkit)
+* Generate N-grams [N-grams](https://www.pythonprogramming.in/generate-the-n-grams-for-the-given-sentence-using-nltk-or-textblob.html)
 
-3. [Named Entity Recognition](#Named-Entity-Recognition)
+<br>3. [Named Entity Recognition](#Named-Entity-Recognition)</br>
+* Use of [SpaCy](https://realpython.com/natural-language-processing-spacy-python/)
+* Use of [SpaCy_Visualizer](https://spacy.io/usage/visualizers)
 
 - - -
 
@@ -26,6 +34,8 @@ Following tasks are performed:
 [Starter Notebook](Starter_Code/crypto_sentiment.ipynb)
 
 - - -
+
+![btc_eth_analysis](Images/btc_eth_analysis.JPG)
 <details>
 
 <summary>Sentiment Analysis</summary>
@@ -41,7 +51,7 @@ Following tasks are performed:
 
 <br>2. *Creation of Dataframe of Sentiment Scores for each coin*</br>
 
-**Bitcoin                      |Ethereum**        
+**Bitcoin**                     |**Ethereum**        
 :-------------------------:|:-------------------------:
 <img src="Images/btc_score_df.PNG" width="300" /> | <img src="Images/eth_score_df.PNG" width="300" />
     
@@ -49,7 +59,7 @@ Following tasks are performed:
 
 <br>3. *Descriptive statistics*</br>
 
-**Bitcoin                      |Ethereum**     
+**Bitcoin**                     |**Ethereum**     
 :-------------------------:|:-------------------------:
 <img src="Images/btc_describe.PNG" width="300" /> | <img src="Images/eth_describe.PNG" width="300" />
 
@@ -135,9 +145,9 @@ Following tasks are performed:
         return Counter(tokens).most_common(N)
     ```
     
-**Bitcoin                      |Ethereum**        
+**Bitcoin**                     |**Ethereum**        
 :-------------------------:|:-------------------------:
-<img src="Images/btc_top_10.PNG" width="100" /> | <img src="Images/eth_top_10.PNG" width="100" />
+<img src="Images/btc_top_10.PNG" width="200" /> | <img src="Images/eth_top_10.PNG" width="200" />
 
 * Generate word clouds for each coin to summarize the news for each coin.
     ```
@@ -152,6 +162,7 @@ Following tasks are performed:
 
 ![eth-word-cloud.png](Images/eth-word-cloud.png)
 
+</details>
 
 <details>
     <summary>Named Entity Recognition</summary>
@@ -191,10 +202,6 @@ Following tasks are performed:
 
 </details>
 
-
-### Resources
-
-[Vader Sentiment Analysis](http://www.nltk.org/howto/sentiment.html)
 
 - - -
 
