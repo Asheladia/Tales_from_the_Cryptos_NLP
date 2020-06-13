@@ -11,7 +11,12 @@ Using fundamental NLP techniques to understand the sentiment in the latest news 
 Following tasks are performed:
 
 1. [Sentiment Analysis](#Sentiment-Analysis)
+    ```
+        from nltk.sentiment.vader import SentimentIntensityAnalyzer
+        analyzer = SentimentIntensityAnalyzer()
+    ```
 2. [Natural Language Processing](#Natural-Language-Processing)
+
 3. [Named Entity Recognition](#Named-Entity-Recognition)
 
 - - -
@@ -23,87 +28,169 @@ Following tasks are performed:
 - - -
 <details>
 
-<summary> Sentiment Analysis </summary>
+<summary>Sentiment Analysis</summary>
+    
+    
+<br>1. *Use of [newsapi](https://newsapi.org/) to pull the latest news articles for Bitcoin and Ethereum*</br>
+    ```
+        btc_articles = newsapi.get_everything(q='bitcoin',
+                                      language='en',
+                                      sort_by='relevancy',
+                                      )
+    ```
 
-Use of [newsapi](https://newsapi.org/) to pull the latest news articles for Bitcoin and Ethereum and created DataFrame of sentiment scores for each coin.
+<br>2. *Creation of Dataframe of Sentiment Scores for each coin*</br>
 
-Descriptive statistics:
-    <ul>
-    <li> Which coin had the highest mean positive score? </li>
-        ```
-        Ethereum - 0.08 
-        ```
-    </ul>
-    <ul>
-    <li> Which coin had the highest negative score? </li>
-        ```
-        Ethereum - 0.025 
-        ```
-    </ul>
-    <ul>
-    <li> Which coin had the highest positive score? </li>
-        ```
-        Ethereum - 0.9198 
-        ```
-    </ul>
+**Bitcoin                      |Ethereum**        
+:-------------------------:|:-------------------------:
+<img src="Images/btc_score_df.PNG" width="300" /> | <img src="Images/eth_score_df.PNG" width="300" />
+    
+    
+
+<br>3. *Descriptive statistics*</br>
+
+**Bitcoin                      |Ethereum**     
+:-------------------------:|:-------------------------:
+<img src="Images/btc_describe.PNG" width="300" /> | <img src="Images/eth_describe.PNG" width="300" />
+
+* Which coin had the highest mean positive score?
+  ```
+     Ethereum - 0.08 
+  ```
+
+* Which coin had the highest negative score? 
+  ```
+     Ethereum - 0.025 
+  ```
+
+* Which coin had the highest positive score? 
+  ```
+     Ethereum - 0.9198 
+  ```
+</ul>
     
 </details>
     
 <details>
 
-<summary> Natural Language Processing </summary>
-* Import the following Libraries from nltk:
+<summary> Natural Language Processing </summary><br>
+    
+<br>1. *Import the following Libraries from nltk:*</br>
     ```
-    from nltk.tokenize import word_tokenize, sent_tokenize
-    from nltk.corpus import stopwords
-    from nltk.stem import WordNetLemmatizer, PorterStemmer
-    from string import punctuation
-    import re
+        from nltk.tokenize import word_tokenize, sent_tokenize
+        from nltk.corpus import stopwords
+        from nltk.stem import WordNetLemmatizer, PorterStemmer
+        from string import punctuation
+        import re
     ```
 
   
-* Use NLTK and Python to tokenize the text for each coin
-<br>1. Remove punctuation</br>
+<br>2. *Use NLTK and Python to tokenize the text for each coin*</br>
+
+
+* Remove punctuation
+    ```    
+        regex = re.compile("[^a-zA-Z0-9 ]")
+        re_clean = regex.sub('', text)
     ```
-    regex = re.compile("[^a-zA-Z0-9 ]")
-re_clean = regex.sub('', text)
+* Lowercase each word
     ```
-<br>2. Lowercase each word</br>
+        words = word_tokenize(re_clean.lower())
     ```
-    words = word_tokenize(re_clean.lower())
+* Remove stop words
     ```
-<br>3. Remove stop words</br>
-     ```
-     sw = set(stopwords.words('english'))
-     ```
-<br>4. Lemmatize Words into Root words</br>
+        sw = set(stopwords.words('english'))
     ```
-  lemmatizer = WordNetLemmatizer()
-lem = [lemmatizer.lemmatize(word) for word in words]
+* Lemmatize Words into Root words
+    ```
+        lemmatizer = WordNetLemmatizer()
+        lem = [lemmatizer.lemmatize(word) for word in words]
     ```
 
-* Next, look at the ngrams and word frequency for each coin.
+<br>3. Look at the ngrams and word frequency for each coin</br>
 
-1. Use NLTK to produce the ngrams for N = 2.
-2. List the top 10 words for each coin.
+* Use NLTK to produce the ngrams for N = 2
+    ```
+        def get_token(df):
+             tokens = []
+        for i in df['tokens']:
+            tokens.extend(i)
+        return tokens
+        btc_tokens = get_token(btc_sentiment_df)
+        eth_tokens = get_token(eth_sentiment_df)
 
-Finally, generate word clouds for each coin to summarize the news for each coin.
+        #Generate the Bitcoin N-grams where N=2
+        def bigram_counter(tokens, N):
+        words_count = dict(Counter(ngrams(tokens, n=N)))
+        return words_count
+    
+        bigram_btc = bigram_counter(btc_tokens, 2)
+    ```
 
+* List the top 10 words for each coin
+    ```
+        # Use the token_count function to generate the top 10 words from each coin
+        def token_count(tokens, N=10):
+        """Returns the top N tokens from the frequency count"""
+        return Counter(tokens).most_common(N)
+    ```
+    
+**Bitcoin                      |Ethereum**        
+:-------------------------:|:-------------------------:
+<img src="Images/btc_top_10.PNG" width="100" /> | <img src="Images/eth_top_10.PNG" width="100" />
+
+* Generate word clouds for each coin to summarize the news for each coin.
+    ```
+        from wordcloud import WordCloud
+        import matplotlib.pyplot as plt
+        plt.style.use('seaborn-whitegrid')
+        import matplotlib as mpl
+        mpl.rcParams['figure.figsize'] = [20.0, 10.0]
+    ```
+    
 ![btc-word-cloud.png](Images/btc-word-cloud.png)
 
 ![eth-word-cloud.png](Images/eth-word-cloud.png)
 
 
+<details>
+    <summary>Named Entity Recognition</summary>
 
-#### Named Entity Recognition
-
-In this section, you will build a named entity recognition model for both coins and visualize the tags using SpaCy.
-
+<br>1. Import SpaCy and displacy</br>
+    ```
+        import spacy
+        from spacy import displacy
+        # Load the spaCy model
+        nlp = spacy.load('en_core_web_sm')
+    ```
+<br>2. Build a named entity recognition model for both coins
+    ```
+        # Run the NER processor on all of the text
+        doc = nlp(btc_content)
+        # Add a title to the document
+        doc.user_data["title"] = "BITCOIN NER"
+    ```
+<br>3. Visualize the tags using SpaCy</br>
+    ```
+        displacy.render(doc, style='ent')
+    ```
+    
 ![btc-ner.png](Images/btc-ner.png)
 
 ![eth-ner.png](Images/eth-ner.png)
 
-- - -
+<br>4. List all Entities</br>
+    ```
+        for ent in doc.ents:
+        print('{} {}'.format(ent.text, ent.label_))
+     ```
+
+**Bitcoin                      |Ethereum**        
+:-------------------------:|:-------------------------:
+<img src="Images/btc_ent.PNG" width="300" /> | <img src="Images/eth_ent.PNG" width="300" />
+
+</details>
+
 
 ### Resources
 
