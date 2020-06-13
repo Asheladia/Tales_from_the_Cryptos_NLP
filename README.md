@@ -35,7 +35,7 @@ Following tasks are performed:
 
 - - -
 
-![btc_eth_analysis](Images/btc_eth_analysis.JPG)
+![btc_eth_analysis](Images/btc_eth_analysis.jpg)
 <details>
 
 <summary>Sentiment Analysis</summary>
@@ -86,6 +86,7 @@ Following tasks are performed:
 <summary> Natural Language Processing </summary><br>
     
 <br>1. *Import the following Libraries from nltk:*</br>
+    
     ```
         from nltk.tokenize import word_tokenize, sent_tokenize
         from nltk.corpus import stopwords
@@ -93,10 +94,8 @@ Following tasks are performed:
         from string import punctuation
         import re
     ```
-
   
 <br>2. *Use NLTK and Python to tokenize the text for each coin*</br>
-
 
 * Remove punctuation
     ```    
@@ -174,7 +173,7 @@ Following tasks are performed:
         # Load the spaCy model
         nlp = spacy.load('en_core_web_sm')
     ```
-<br>2. Build a named entity recognition model for both coins
+<br>2. Build a named entity recognition model for both coins</br>
     ```
         # Run the NER processor on all of the text
         doc = nlp(btc_content)
@@ -196,7 +195,7 @@ Following tasks are performed:
         print('{} {}'.format(ent.text, ent.label_))
      ```
 
-**Bitcoin                      |Ethereum**        
+**Bitcoin**                      |**Ethereum**        
 :-------------------------:|:-------------------------:
 <img src="Images/btc_ent.PNG" width="300" /> | <img src="Images/eth_ent.PNG" width="300" />
 
